@@ -19,9 +19,12 @@ jobs:
 
       - name: Fix Naming and Compile
         run: |
-          # This command finds your .ino file and renames it to match the folder perfectly
+          # Finds the repo name (C6-Scanner-)
           SKETCH_NAME=$(basename $GITHUB_REPOSITORY)
-          mv *.ino "$SKETCH_NAME.ino"
+          # Renames the file ONLY if it's not already named correctly
+          if [ ! -f "$SKETCH_NAME.ino" ]; then
+            mv *.ino "$SKETCH_NAME.ino"
+          fi
           arduino-cli compile --fqbn esp32:esp32:esp32c6 --output-dir ./build ./
 
       - name: Upload Binary Artifact
